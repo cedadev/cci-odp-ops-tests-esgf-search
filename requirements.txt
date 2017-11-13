@@ -1,0 +1,10 @@
+certifi==2017.7.27.1
+chardet==3.0.4
+idna==2.6
+Jinja2==2.10
+MarkupSafe==1.0
+nagiosplugin==1.2.4
+requests==2.18.4
+requests-cache==0.4.13
+six==1.11.0
+urllib3==1.22
