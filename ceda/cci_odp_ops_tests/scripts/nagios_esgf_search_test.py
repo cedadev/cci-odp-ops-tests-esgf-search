@@ -37,15 +37,21 @@ class CciEsgfSearchNagiosCtx(nagiosplugin.context.Context):
 
         # If the whole test case is run then multiple tests will be executed
         # so need to cater for multiple results:
-        if result.testsRun == n_problems:
-            # Overall fail
-            status = nagiosplugin.context.Critical
+        if n_problems > 0:
+            if result.testsRun == n_problems:
+                # Overall fail
+                status = nagiosplugin.context.Critical
+                hint = 'All tests failed: '
+            else:
+                # Overall warning
+                status = nagiosplugin.context.Warn
+                hint = 'Some tests failed: '
 
             # Pass text for first error in the hint
             if n_errors:
-                hint = str(result.errors[0][0])
+                hint += str(result.errors[0][0])
             elif n_failures:
-                hint = str(result.failures[0][0])
+                hint += str(result.failures[0][0])
 
             # Log all the rest
             for error in result.errors:
@@ -56,11 +62,6 @@ class CciEsgfSearchNagiosCtx(nagiosplugin.context.Context):
             for failure in result.failures:
                 log.error(failure[0])
                 log.error(failure[1])
-
-        elif n_problems > 0:
-            # Overall warning
-            status = nagiosplugin.context.Warn
-            hint = 'Some {} tests failed'.format(test_name)
         else:
             # Overall pass
             status = nagiosplugin.context.Ok
@@ -106,13 +107,13 @@ def main():
     import os
     if '-h' in sys.argv:
         prog_name = os.path.basename(sys.argv[0])
-        csw_test_names = ['EsgfSearchTestCase.{}'.format(name_)
+        esgf_search_test_names = ['EsgfSearchTestCase.{}'.format(name_)
                           for name_ in dir(EsgfSearchTestCase)
                           if name_.startswith('test')]
-        csw_test_names_displ = '-h|EsgfSearchTestCase|' + '|'.join(
-                                                                csw_test_names)
+        esgf_search_test_names_displ = '-h|EsgfSearchTestCase|' + '|'.join(
+                                                        esgf_search_test_names)
         raise SystemExit('Usage: {} <{}>{}'.format(prog_name,
-                                                 csw_test_names_displ,
+                                                 esgf_search_test_names_displ,
                                                  os.linesep))
 
     elif len(sys.argv) > 1:
