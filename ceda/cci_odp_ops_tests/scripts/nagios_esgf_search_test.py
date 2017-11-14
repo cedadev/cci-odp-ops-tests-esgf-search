@@ -15,14 +15,18 @@ import nagiosplugin
 import ceda.cci_odp_ops_tests.test_esgf_search
 from ceda.cci_odp_ops_tests.test_esgf_search import EsgfSearchTestCase
 
-log = logging.getLogger(__name__)
+log = logging.getLogger('nagiosplugin')
 
 
 class CciEsgfSearchNagiosCtx(nagiosplugin.context.Context):
     '''Nagios Context - sets tests to run and executes them'''
     def evaluate(self, metric, resource):
         '''Run tests from CSW unittest case'''
-        tests = unittest.defaultTestLoader.loadTestsFromName(metric[0],
+
+        # The test may be an individual one or a whole test case.  For the
+        # latter, this may involve multiple tests
+        test_name = metric[0]
+        tests = unittest.defaultTestLoader.loadTestsFromName(test_name,
                                 module=ceda.cci_odp_ops_tests.test_esgf_search)
 
         result = unittest.TestResult()
@@ -31,19 +35,39 @@ class CciEsgfSearchNagiosCtx(nagiosplugin.context.Context):
         n_errors = len(result.errors)
         n_problems = n_failures + n_errors
 
+        # If the whole test case is run then multiple tests will be executed
+        # so need to cater for multiple results:
         if result.testsRun == n_problems:
             # Overall fail
             status = nagiosplugin.context.Critical
 
+            # Pass text for first error in the hint
+            if n_errors:
+                hint = str(result.errors[0][0])
+            elif n_failures:
+                hint = str(result.failures[0][0])
+
+            # Log all the rest
+            for error in result.errors:
+                log.error(error[0])
+                log.error(error[1])
+
+            # Log all the rest
+            for failure in result.failures:
+                log.error(failure[0])
+                log.error(failure[1])
+
         elif n_problems > 0:
             # Overall warning
             status = nagiosplugin.context.Warn
-
+            hint = 'Some {} tests failed'.format(test_name)
         else:
             # Overall pass
             status = nagiosplugin.context.Ok
+            hint = '{} test passed'.format(test_name)
 
-        return self.result_cls(status, metric=metric)
+        return self.result_cls(status, hint=hint, metric=metric)
+
 
 class CciEsgfSearch(nagiosplugin.Resource):
     '''Nagios resource abstraction - CCI ESGF Search in this case
@@ -60,9 +84,19 @@ class CciEsgfSearch(nagiosplugin.Resource):
     def probe(self):
         '''Special probe method applies the metrics for the resource'''
         for test_name in self.test_names:
-            log.info('Running {}'.format(test_name))
             yield nagiosplugin.Metric(test_name, True,
                                       context='CciEsgfSearchCtx')
+
+
+class EsgfSearchTestResultsSummary(nagiosplugin.Summary):
+    """Present output summary
+    """
+    def ok(self, results):
+        return ', '.join([result.hint for result in results])
+
+    def problem(self, results):
+        return 'Problems with test: ' + ', '.join([result.hint
+                                                     for result in results])
 
 
 @nagiosplugin.guarded
@@ -87,7 +121,8 @@ def main():
         test_names = None
 
     check = nagiosplugin.Check(CciEsgfSearch(test_names),
-                               CciEsgfSearchNagiosCtx('CciEsgfSearchCtx'))
+                               CciEsgfSearchNagiosCtx('CciEsgfSearchCtx'),
+                               EsgfSearchTestResultsSummary())
     check.name = 'CCI-ESGF-Search'
     check.main()
 
