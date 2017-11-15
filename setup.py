@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Distribution Utilities setup program for CCI OGC TDS scanning Package
+"""Distribution Utilities setup program for CCI ESGF Search ops test Package
 
 Contrail Project
 """
@@ -53,13 +53,12 @@ setup(
         'Topic :: Internet',
         'Topic :: Scientific/Engineering',
         'Topic :: System :: Distributed Computing',
-        'Topic :: System :: Systems Administration :: Authentication/Directory',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     entry_points={
         'console_scripts': [
             'cci_odp_esgf_search_test = '
-            'ceda.cci_odp_ops_tests.scripts.nagios_esgf_search_test:main',
+            'ceda.cci_odp_ops_tests.nagios_test.esgf_search_test:main',
         ],
     },
     zip_safe = False
