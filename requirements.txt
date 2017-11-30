@@ -8,3 +8,5 @@ requests==2.18.4
 requests-cache==0.4.13
 six==1.11.0
 urllib3==1.22
+-e git+https://github.com/cedadev/ceda-unittest-nagios-wrapper.git@59f0d2557c84c473e079aa8728a6ca46d4111c38#egg=ceda_unittest_nagios_wrapper
+-e git+https://github.com/philipkershaw/slack-logging-handler.git@67fd4c51dab4dd9293a239d21471bb3050d6f06d#egg=cedadev_slack_logging_handler
