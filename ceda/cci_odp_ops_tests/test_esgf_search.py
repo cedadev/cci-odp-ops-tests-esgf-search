@@ -35,28 +35,36 @@ class EsgfSearchTestCase(unittest.TestCase):
         return results
 
     def test01_search_all(self):
-        results = self.__class__._search()
-        self.assertGreater(len(results), self.__class__.MIN_EXPTD_DATASETS-1,
-                           msg='Expecting at least {:d} datasets returned from'
-                               ' search'.format(
+        ds_results = self.__class__._search()
+        self.assertGreater(ds_results.context.hit_count, 
+                           self.__class__.MIN_EXPTD_DATASETS-1,
+                           msg='Expecting at least {:d} datasets returned '
+                               'from search'.format(
                                self.__class__.MIN_EXPTD_DATASETS))
 
-        ds = results[0]
-
-        self.assertTrue(ds, msg='Expecting non-null first dataset ID')
-
-        f1 = ds.file_context().search()[0]
-        self.assertTrue(f1, msg='Expecting non-null first download URL')
+        sample_index_spacing = ds_results.context.hit_count // 5
+        sample_indices = [i * sample_index_spacing for i in range(5)]
+        for i in sample_indices:
+            ds_result = ds_results[i]
+            self.assertTrue(ds_result, 
+                            msg='Expecting non-null first dataset ID')
+            
+            sample_index = ds_result.number_of_files // 2
+            file_result = ds_result.file_context().search()[sample_index]
+            self.assertTrue(file_result, 
+                            msg='Expecting non-null for {} download '
+                            'URL'.format(sample_index))
+                
 
     def test02_search_soilmoisture(self):
-        results = self.__class__._search(cci_project="SOILMOISTURE")
-        self.assertGreater(len(results),
+        ds_results = self.__class__._search(cci_project="SOILMOISTURE")
+        self.assertGreater(ds_results.context.hit_count,
                            self.__class__.MIN_EXPTD_SOILMOISTURE_DATASETS-1,
-                           msg='Expecting at least {:d} datasets returned from'
-                               ' search'.format(
+                           msg='Expecting at least {:d} datasets returned '
+                               'from search'.format(
                                self.__class__.MIN_EXPTD_SOILMOISTURE_DATASETS))
 
-        ds = results[0]
+        ds = ds_results[0]
 
         self.assertTrue(ds, msg='Expecting non-null first dataset ID')
 
@@ -64,14 +72,14 @@ class EsgfSearchTestCase(unittest.TestCase):
         self.assertTrue(f1, msg='Expecting non-null first download URL')
 
     def test03_search_oceancolour(self):
-        results = self.__class__._search(cci_project="OC")
-        self.assertGreater(len(results),
+        ds_results = self.__class__._search(cci_project="OC")
+        self.assertGreater(len(ds_results),
                            self.__class__.MIN_EXPTD_OCEANCOLOUR_DATASETS-1,
-                           msg='Expecting at least {:d} datasets returned from'
-                               ' search'.format(
-                                self.__class__.MIN_EXPTD_OCEANCOLOUR_DATASETS))
+                           msg='Expecting at least {:d} datasets returned '
+                               'from search'.format(
+                               self.__class__.MIN_EXPTD_OCEANCOLOUR_DATASETS))
 
-        ds = results[0]
+        ds = ds_results[0]
 
         self.assertTrue(ds, msg='Expecting non-null first dataset ID')
 
