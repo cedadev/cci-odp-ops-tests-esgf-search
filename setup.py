@@ -21,7 +21,7 @@ except ImportError:
 
 setup(
     name =              'cci-odp-ops-tests-esgf-search',
-    version =           '0.2.0',
+    version =           '0.2.1',
     description =       'Test CCI Open Data Portal ESGF Search Service',
     long_description =  '''Tests based on unit test framework and Nagios
 ''',
