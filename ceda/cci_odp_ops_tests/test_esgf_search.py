@@ -9,6 +9,7 @@ __license__ = """BSD - See LICENSE file in top-level directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
 __revision__ = '$Id$'
 import unittest
+import os
 
 import requests
 
@@ -19,11 +20,13 @@ class EsgfSearchTestCase(unittest.TestCase):
     '''Unit test case for testing ESA CCI Open Data Portal ESGF Search
     Service'''
 
-    ESGF_SEARCH_URI = 'http://esgf-index1.ceda.ac.uk/esg-search'
+    ESGF_SEARCH_URI = os.environ.get(
+                            'CCI_ODP_ESGF_SEARCH_URI',
+                            'http://esgf-index1.ceda.ac.uk/esg-searchX')
     ESGF_SEARCH_CCI_PROJ_NAME = 'esacci'
-    MIN_EXPTD_DATASETS = 200
-    MIN_EXPTD_SOILMOISTURE_DATASETS = 9
-    MIN_EXPTD_OCEANCOLOUR_DATASETS = 100
+    MIN_EXPTD_DATASETS = 102
+    MIN_EXPTD_SOILMOISTURE_DATASETS = 6
+    MIN_EXPTD_OCEANCOLOUR_DATASETS = 40
 
     @classmethod
     def _search(cls, **search_kwargs):
@@ -41,7 +44,7 @@ class EsgfSearchTestCase(unittest.TestCase):
                            msg='Expecting at least {:d} datasets returned '
                                'from search'.format(
                                self.__class__.MIN_EXPTD_DATASETS))
-
+        
         sample_index_spacing = ds_results.context.hit_count // 5
         sample_indices = [i * sample_index_spacing for i in range(5)]
         for i in sample_indices:

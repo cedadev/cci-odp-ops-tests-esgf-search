@@ -14,12 +14,15 @@ from ceda.cci_odp_ops_tests.test_esgf_search import EsgfSearchTestCase
 def main():
     '''Entry point for script - use standard nagios script'''
 
+#     import logging
+#     logging.basicConfig(level=logging.DEBUG)
+    
     # These options can be overridden by the CLI options
     SLACK_CHANNEL = 'cci-odp-ops-logging'
     SLACK_USER = 'cci-ops-test'
 
-    nagios_script(EsgfSearchTestCase, slack_channel=SLACK_CHANNEL,
-                  slack_user=SLACK_USER)
+    nagios_script(EsgfSearchTestCase, check_name='ESGF Search', 
+                  slack_channel=SLACK_CHANNEL, slack_user=SLACK_USER)
 
 
 if __name__ == '__main__':
