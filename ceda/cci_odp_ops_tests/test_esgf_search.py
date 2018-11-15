@@ -19,7 +19,7 @@ class EsgfSearchTestCase(unittest.TestCase):
     '''Unit test case for testing ESA CCI Open Data Portal ESGF Search
     Service'''
 
-    ESGF_SEARCH_URI = 'http://esgf-index1.ceda.ac.uk/esg-searchX'
+    ESGF_SEARCH_URI = 'http://esgf-index1.ceda.ac.uk/esg-search'
     ESGF_SEARCH_CCI_PROJ_NAME = 'esacci'
     MIN_EXPTD_DATASETS = 200
     MIN_EXPTD_SOILMOISTURE_DATASETS = 9
