@@ -4,7 +4,7 @@
 __author__ = "P J Kershaw"
 __date__ = "09/11/17"
 __copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
-__license__ = """BSD - See LICENSE file in top-level directory"""
+__license__ = """BSD - See LICENSE file in top-level package directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
 __revision__ = '$Id$'
 
@@ -19,10 +19,9 @@ except ImportError:
 
 setup(
     name =              'cci-odp-ops-tests-esgf-search',
-    version =           '0.2.1',
+    version =           '0.3.0',
     description =       'Test CCI Open Data Portal ESGF Search Service',
-    long_description =  '''Tests based on unit test framework and Nagios
-''',
+    long_description =  '''Tests based on unit test framework and Nagios''',
     author =            'Philip Kershaw',
     author_email =      'Philip.Kershaw@stfc.ac.uk',
     maintainer =        'Philip Kershaw',
