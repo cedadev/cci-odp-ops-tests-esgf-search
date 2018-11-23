@@ -55,7 +55,6 @@ class EsgfSearchTestCase(unittest.TestCase):
                             msg='Expecting non-null for {} download '
                             'URL'.format(sample_index))
                 
-
     def test02_search_soilmoisture(self):
         ds_results = self.__class__._search(cci_project="SOILMOISTURE")
         self.assertGreater(ds_results.context.hit_count,
