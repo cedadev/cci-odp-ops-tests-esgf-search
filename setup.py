@@ -6,8 +6,6 @@ __date__ = "09/11/17"
 __copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
 __license__ = """BSD - See LICENSE file in top-level package directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
-__revision__ = '$Id$'
-
 # Bootstrap setuptools if necessary.
 try:
     from setuptools import setup, find_packages
