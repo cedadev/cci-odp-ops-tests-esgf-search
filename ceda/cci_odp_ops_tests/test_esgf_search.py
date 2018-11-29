@@ -23,7 +23,7 @@ class EsgfSearchTestCase(unittest.TestCase):
 
     ESGF_SEARCH_URI = os.environ.get(
                             'CCI_ODP_ESGF_SEARCH_URI',
-                            'http://esgf-index1.ceda.ac.uk/esg-searchX')
+                            'http://cci-odp-index.ceda.ac.uk/esg-search')
     ESGF_SEARCH_CCI_PROJ_NAME = 'esacci'
     MIN_EXPTD_DATASETS = 102
     MIN_EXPTD_SOILMOISTURE_DATASETS = 6
