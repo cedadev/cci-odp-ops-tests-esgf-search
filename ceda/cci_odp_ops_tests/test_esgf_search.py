@@ -8,6 +8,7 @@ __copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
 __license__ = """BSD - See LICENSE file in top-level directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
 __revision__ = '$Id$'
+import os
 import unittest
 
 import requests
@@ -19,11 +20,12 @@ class EsgfSearchTestCase(unittest.TestCase):
     '''Unit test case for testing ESA CCI Open Data Portal ESGF Search
     Service'''
 
-    ESGF_SEARCH_URI = 'http://esgf-index1.ceda.ac.uk/esg-search'
+    ESGF_SEARCH_URI = os.getenv('CCI_CSW_TESTCASE_ESGF_SEARCH_URI',
+                                'http://cci-odp-index.ceda.ac.uk/esg-search')
     ESGF_SEARCH_CCI_PROJ_NAME = 'esacci'
-    MIN_EXPTD_DATASETS = 200
-    MIN_EXPTD_SOILMOISTURE_DATASETS = 9
-    MIN_EXPTD_OCEANCOLOUR_DATASETS = 100
+    MIN_EXPTD_DATASETS = 100
+    MIN_EXPTD_SOILMOISTURE_DATASETS = 6
+    MIN_EXPTD_OCEANCOLOUR_DATASETS = 40
 
     @classmethod
     def _search(cls, **search_kwargs):
@@ -72,7 +74,7 @@ class EsgfSearchTestCase(unittest.TestCase):
 
     def test03_search_oceancolour(self):
         ds_results = self.__class__._search(cci_project="OC")
-        self.assertGreater(len(ds_results),
+        self.assertGreater(ds_results.context.hit_count,
                            self.__class__.MIN_EXPTD_OCEANCOLOUR_DATASETS-1,
                            msg='Expecting at least {:d} datasets returned '
                                'from search'.format(
