@@ -1,0 +1,6 @@
+/cci_odp_ops_tests_esgf_search.egg-info/
+/dist/
+/esgf-search.sh
+ceda/__pycache__/
+ceda/cci_odp_ops_tests/__pycache__/
+ceda/cci_odp_ops_tests/nagios_test/__pycache__/

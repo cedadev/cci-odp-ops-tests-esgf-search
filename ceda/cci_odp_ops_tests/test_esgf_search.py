@@ -4,10 +4,11 @@
 from nagiosplugin import result
 __author__ = "P J Kershaw"
 __date__ = "07/11/17"
-__copyright__ = "(C) 2017 Science and Technology Facilities Council"
+__copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
 __license__ = """BSD - See LICENSE file in top-level directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
 __revision__ = '$Id$'
+import os
 import unittest
 import os
 
@@ -58,7 +59,6 @@ class EsgfSearchTestCase(unittest.TestCase):
                             msg='Expecting non-null for {} download '
                             'URL'.format(sample_index))
                 
-
     def test02_search_soilmoisture(self):
         ds_results = self.__class__._search(cci_project="SOILMOISTURE")
         self.assertGreater(ds_results.context.hit_count,
@@ -76,7 +76,7 @@ class EsgfSearchTestCase(unittest.TestCase):
 
     def test03_search_oceancolour(self):
         ds_results = self.__class__._search(cci_project="OC")
-        self.assertGreater(len(ds_results),
+        self.assertGreater(ds_results.context.hit_count,
                            self.__class__.MIN_EXPTD_OCEANCOLOUR_DATASETS-1,
                            msg='Expecting at least {:d} datasets returned '
                                'from search'.format(

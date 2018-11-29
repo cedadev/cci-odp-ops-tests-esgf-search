@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 """Distribution Utilities setup program for CCI ESGF Search ops test Package
-
-Contrail Project
 """
 __author__ = "P J Kershaw"
 __date__ = "09/11/17"
-__copyright__ = "(C) 2017 Science and Technology Facilities Council"
-__license__ = """BSD - See LICENSE file in top-level directory"""
+__copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
+__license__ = """BSD - See LICENSE file in top-level package directory"""
 __contact__ = "Philip.Kershaw@stfc.ac.uk"
-__revision__ = '$Id$'
-
 # Bootstrap setuptools if necessary.
 try:
     from setuptools import setup, find_packages
@@ -21,10 +17,9 @@ except ImportError:
 
 setup(
     name =              'cci-odp-ops-tests-esgf-search',
-    version =           '0.2.1',
+    version =           '0.3.0',
     description =       'Test CCI Open Data Portal ESGF Search Service',
-    long_description =  '''Tests based on unit test framework and Nagios
-''',
+    long_description =  '''Tests based on unit test framework and Nagios''',
     author =            'Philip Kershaw',
     author_email =      'Philip.Kershaw@stfc.ac.uk',
     maintainer =        'Philip Kershaw',
@@ -34,6 +29,11 @@ setup(
     license =           __license__,
     test_suite =        '',
     packages =          find_packages(),
+    package_data={
+        'ceda/cci_odp_ops_tests': [
+            'LICENSE',
+        ],
+    },
     classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -48,7 +48,6 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 2',
         'Topic :: Security',
         'Topic :: Internet',
         'Topic :: Scientific/Engineering',
