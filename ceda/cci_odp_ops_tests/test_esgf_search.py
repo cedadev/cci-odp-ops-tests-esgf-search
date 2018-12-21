@@ -28,6 +28,12 @@ class EsgfSearchTestCase(unittest.TestCase):
     MIN_EXPTD_DATASETS = 102
     MIN_EXPTD_SOILMOISTURE_DATASETS = 6
     MIN_EXPTD_OCEANCOLOUR_DATASETS = 40
+    
+    CORS_QUERY_HDR = {
+        'Origin': 'http://sample.com',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'X-Requested-With'
+    }
 
     @classmethod
     def _search(cls, **search_kwargs):
@@ -88,3 +94,12 @@ class EsgfSearchTestCase(unittest.TestCase):
 
         f1 = ds.file_context().search()[0]
         self.assertTrue(f1, msg='Expecting non-null first download URL')
+        
+    def test04_cors(self):
+        # Needed for JS queries to the service from the CCI web presence
+        response = requests.options(self.__class__.ESGF_SEARCH_URI, 
+                                    headers=self.__class__.CORS_QUERY_HDR)
+        
+        self.assertEqual(response.status_code, 200, 
+                         msg="Expecting 200 OK response code for CORS "
+                             "request")
