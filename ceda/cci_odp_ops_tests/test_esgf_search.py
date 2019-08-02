@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """Test CCI Open Data Portal CSW service
 """
-from nagiosplugin import result
 __author__ = "P J Kershaw"
 __date__ = "07/11/17"
 __copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
@@ -24,7 +23,9 @@ class EsgfSearchTestCase(unittest.TestCase):
     ESGF_SEARCH_URI = os.environ.get(
                             'CCI_ODP_ESGF_SEARCH_URI',
                             'http://cci-odp-index.ceda.ac.uk/esg-search')
-    ESGF_SEARCH_CCI_PROJ_NAME = 'esacci'
+    ESGF_SEARCH_CCI_PROJ_NAME = os.environ.get(
+                                        'CCI_ODP_ESGF_SEARCH_PROJ_NAME',
+                                        'esacci')
     MIN_EXPTD_DATASETS = 102
     MIN_EXPTD_SOILMOISTURE_DATASETS = 6
     MIN_EXPTD_OCEANCOLOUR_DATASETS = 40
@@ -37,7 +38,7 @@ class EsgfSearchTestCase(unittest.TestCase):
 
     @classmethod
     def _search(cls, **search_kwargs):
-        conn = SearchConnection(cls.ESGF_SEARCH_URI, distrib=False)
+        conn = SearchConnection(cls.ESGF_SEARCH_URI)
         ctx = conn.new_context(project=cls.ESGF_SEARCH_CCI_PROJ_NAME,
                                **search_kwargs)
 
@@ -103,3 +104,7 @@ class EsgfSearchTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200, 
                          msg="Expecting 200 OK response code for CORS "
                              "request")
+
+
+if __name__ == '__main__':
+    unittest.main()
